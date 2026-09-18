@@ -1,0 +1,89 @@
+id,name,category,state,kcal,protein_g,fat_g,carbs_g,fiber_g,sodium_mg,refuse_pct,cooked_yield,density_g_per_ml
+chicken_breast,Chicken Breast (skinless),meat,raw,120,22.5,2.6,0,0,45,0,0.72,
+chicken_thigh,Chicken Thigh (skinless),meat,raw,119,19.7,4.1,0,0,84,0,0.75,
+chicken_whole,Chicken (whole with bone),meat,raw,215,18.6,15.1,0,0,70,28,0.72,
+mutton,Mutton / Goat Meat,meat,raw,109,20.6,2.3,0,0,82,12,0.73,
+fish_rohu,Fish (Rohu),seafood,raw,97,16.6,1.4,0,0,55,35,0.78,
+prawns,Prawns,seafood,raw,99,24.0,0.3,0.2,0,111,45,0.75,
+egg,Egg (whole),egg,raw,143,12.6,9.5,0.7,0,142,0,0.90,
+egg_white,Egg White,egg,raw,52,10.9,0.2,0.7,0,166,0,0.90,
+paneer,Paneer (full fat),dairy,raw,296,18.3,22.8,2.6,0,18,0,1.00,
+milk_whole,Milk (whole cow),dairy,raw,61,3.2,3.3,4.8,0,43,0,1.00,1.03
+milk_toned,Milk (toned),dairy,raw,58,3.1,3.0,4.7,0,44,0,1.00,1.03
+curd,Curd / Dahi,dairy,raw,61,3.5,3.3,4.7,0,46,0,1.00,1.03
+greek_yogurt,Greek Yogurt (low fat),dairy,raw,73,10.0,1.9,3.9,0,34,0,1.00,1.03
+butter,Butter,fat,raw,717,0.9,81.1,0.1,0,643,0,1.00,0.91
+ghee,Ghee,fat,raw,900,0,100,0,0,2,0,1.00,0.91
+sunflower_oil,Sunflower Oil,fat,raw,884,0,100,0,0,0,0,1.00,0.92
+mustard_oil,Mustard Oil,fat,raw,884,0,100,0,0,0,0,1.00,0.92
+coconut_oil,Coconut Oil,fat,raw,892,0,99.9,0,0,0,0,1.00,0.92
+olive_oil,Olive Oil,fat,raw,884,0,100,0,0,2,0,1.00,0.92
+cream,Fresh Cream (25 pct fat),dairy,raw,250,2.5,25.0,3.4,0,40,0,1.00,1.01
+khoya,Khoya / Mawa,dairy,raw,421,14.6,31.2,20.5,0,80,0,1.00,
+condensed_milk,Condensed Milk (sweetened),dairy,raw,321,7.9,8.7,54.4,0,127,0,1.00,1.28
+onion,Onion,vegetable,raw,40,1.1,0.1,9.3,1.7,4,10,0.85,
+tomato,Tomato,vegetable,raw,18,0.9,0.2,3.9,1.2,5,6,0.85,
+potato,Potato,vegetable,raw,77,2.0,0.1,17.5,2.1,6,15,0.95,
+garlic,Garlic,aromatic,raw,149,6.4,0.5,33.1,2.1,17,13,1.00,
+ginger,Ginger,aromatic,raw,80,1.8,0.8,17.8,2.0,13,10,1.00,
+green_chilli,Green Chilli,aromatic,raw,40,1.9,0.4,8.8,1.5,7,5,1.00,
+capsicum,Capsicum / Bell Pepper,vegetable,raw,20,0.9,0.2,4.6,1.7,3,18,0.85,
+cauliflower,Cauliflower,vegetable,raw,25,1.9,0.3,5.0,2.0,30,35,0.90,
+cabbage,Cabbage,vegetable,raw,25,1.3,0.1,5.8,2.5,18,20,0.85,
+spinach,Spinach / Palak,vegetable,raw,23,2.9,0.4,3.6,2.2,79,28,0.30,
+brinjal,Brinjal / Eggplant,vegetable,raw,25,1.0,0.2,5.9,3.0,2,10,0.80,
+okra,Okra / Bhindi,vegetable,raw,33,1.9,0.2,7.5,3.2,7,14,0.85,
+carrot,Carrot,vegetable,raw,41,0.9,0.2,9.6,2.8,69,11,0.90,
+green_peas,Green Peas,vegetable,raw,81,5.4,0.4,14.5,5.1,5,0,0.95,
+bottle_gourd,Bottle Gourd / Lauki,vegetable,raw,15,0.6,0.1,3.4,0.5,2,25,0.80,
+pumpkin,Pumpkin,vegetable,raw,26,1.0,0.1,6.5,0.5,1,25,0.85,
+cucumber,Cucumber,vegetable,raw,15,0.7,0.1,3.6,0.5,2,12,1.00,
+sweet_potato,Sweet Potato,vegetable,raw,86,1.6,0.1,20.1,3.0,55,20,0.95,
+mushroom,Mushroom (button),vegetable,raw,22,3.1,0.3,3.3,1.0,5,3,0.60,
+sweet_corn,Sweet Corn (kernels),vegetable,raw,86,3.3,1.2,19.0,2.0,15,0,0.95,
+coriander_leaves,Coriander Leaves,herb,raw,23,2.1,0.5,3.7,2.8,46,10,1.00,
+mint_leaves,Mint Leaves,herb,raw,70,3.8,0.9,14.9,8.0,31,10,1.00,
+curry_leaves,Curry Leaves,herb,raw,108,6.1,1.0,18.7,6.4,20,0,1.00,
+lemon_juice,Lemon Juice,other,raw,22,0.4,0.2,6.9,0.3,1,0,1.00,1.03
+tamarind,Tamarind (pulp),other,raw,239,2.8,0.6,62.5,5.1,28,0,1.00,
+coconut_fresh,Coconut (fresh grated),other,raw,354,3.3,33.5,15.2,9.0,20,0,1.00,
+coconut_milk,Coconut Milk,other,raw,230,2.3,24.0,5.5,2.2,15,0,1.00,0.98
+rice_white_raw,Rice (white polished),grain,raw,360,6.8,0.6,78.9,1.3,1,0,2.60,
+rice_brown_raw,Rice (brown),grain,raw,362,7.9,2.9,76.2,3.5,4,0,2.50,
+rice_white_cooked,Rice (white cooked),grain,cooked,130,2.7,0.3,28.2,0.4,1,0,1.00,
+atta,Whole Wheat Flour / Atta,grain,raw,340,12.1,2.5,71.2,10.7,2,0,0,
+maida,Refined Flour / Maida,grain,raw,364,10.3,1.0,76.3,2.7,2,0,0,
+suji,Semolina / Suji,grain,raw,360,12.7,1.1,72.8,3.9,1,0,2.80,
+poha,Poha / Flattened Rice,grain,raw,350,6.6,1.2,77.3,1.2,10,0,2.50,
+oats,Oats (rolled),grain,raw,389,16.9,6.9,66.3,10.6,2,0,2.60,
+besan,Gram Flour / Besan,pulse,raw,387,22.4,6.7,57.8,10.8,64,0,0,
+toor_dal,Toor / Arhar Dal,pulse,raw,343,22.3,1.7,62.8,15.0,17,0,2.50,
+moong_dal,Moong Dal,pulse,raw,348,24.0,1.2,59.0,16.3,15,0,2.50,
+masoor_dal,Masoor Dal,pulse,raw,352,25.1,1.1,63.1,10.7,6,0,2.50,
+chana_dal,Chana Dal,pulse,raw,364,20.8,6.0,60.6,17.0,40,0,2.40,
+urad_dal,Urad Dal,pulse,raw,341,25.2,1.6,58.9,18.3,38,0,2.50,
+rajma,Rajma / Kidney Beans,pulse,raw,333,24.0,0.8,60.0,25.0,12,0,2.40,
+kabuli_chana,Chickpeas / Kabuli Chana,pulse,raw,364,19.3,6.0,60.7,17.4,24,0,2.40,
+soya_chunks,Soya Chunks,pulse,raw,345,52.0,0.5,33.0,13.0,20,0,2.80,
+tofu,Tofu,pulse,raw,76,8.1,4.8,1.9,0.3,7,0,1.00,
+peanuts,Peanuts,nut,raw,567,25.8,49.2,16.1,8.5,18,0,1.00,
+almonds,Almonds,nut,raw,579,21.2,49.9,21.6,12.5,1,0,1.00,
+cashew,Cashew Nuts,nut,raw,553,18.2,43.9,30.2,3.3,12,0,1.00,
+sesame_seeds,Sesame Seeds,nut,raw,573,17.7,49.7,23.4,11.8,11,0,1.00,
+sugar,Sugar,sweetener,raw,387,0,0,100,0,1,0,1.00,
+jaggery,Jaggery / Gur,sweetener,raw,383,0.4,0.1,97.9,0,30,0,1.00,
+honey,Honey,sweetener,raw,304,0.3,0,82.4,0.2,4,0,1.00,1.42
+salt,Salt,seasoning,raw,0,0,0,0,0,38758,0,1.00,
+turmeric_powder,Turmeric Powder,spice,raw,312,9.7,3.2,67.1,22.7,27,0,1.00,
+chilli_powder,Red Chilli Powder,spice,raw,282,12.3,14.3,49.7,34.8,30,0,1.00,
+coriander_powder,Coriander Powder,spice,raw,298,12.4,17.8,55.0,41.9,35,0,1.00,
+cumin_seeds,Cumin Seeds / Jeera,spice,raw,375,17.8,22.3,44.2,10.5,168,0,1.00,
+mustard_seeds,Mustard Seeds,spice,raw,508,26.1,36.2,28.1,12.2,13,0,1.00,
+garam_masala,Garam Masala,spice,raw,379,14.0,15.0,45.0,25.0,40,0,1.00,
+black_pepper,Black Pepper,spice,raw,251,10.4,3.3,63.9,25.3,20,0,1.00,
+asafoetida,Asafoetida / Hing,spice,raw,297,4.0,1.1,67.8,4.1,50,0,1.00,
+kasuri_methi,Kasuri Methi,spice,raw,323,23.0,6.4,58.4,24.6,67,0,1.00,
+banana,Banana,fruit,raw,89,1.1,0.3,22.8,2.6,1,35,1.00,
+apple,Apple,fruit,raw,52,0.3,0.2,13.8,2.4,1,10,1.00,
+mango,Mango,fruit,raw,60,0.8,0.4,15.0,1.6,1,32,1.00,
+water,Water,other,raw,0,0,0,0,0,0,0,1.00,1.00

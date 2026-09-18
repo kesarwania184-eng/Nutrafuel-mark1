@@ -1,0 +1,15 @@
+method,moisture_factor,leach_loss_pct,fat_absorbed_g_per_100g,drains_liquid,confidence_penalty,note
+raw,1.00,0,0,false,1.00,no cooking applied
+boiled,1.00,12,0,true,0.95,water soluble minerals lost to discarded water
+steamed,0.97,4,0,false,0.97,minimal losses
+pressure_cooked,1.00,8,0,false,0.96,liquid retained in most Indian use
+curry,0.88,0,0,false,0.93,simmered with added water - cooked weight uncertain
+gravy,0.88,0,0,false,0.93,same as curry
+sauteed,0.80,2,0,false,0.95,bhuna style - oil is itemised
+tadka,0.95,0,0,false,0.95,tempering - oil is itemised
+shallow_fried,0.78,2,0,false,0.92,itemised oil largely absorbed
+grilled,0.75,3,0,false,0.94,tandoor or grill
+roasted,0.75,3,0,false,0.94,
+baked,0.85,3,0,false,0.94,
+deep_fried,0.80,3,9,false,0.82,oil absorbed from an unitemised frying bath
+air_fried,0.78,3,0,false,0.90,

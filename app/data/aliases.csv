@@ -1,0 +1,160 @@
+alias,ingredient_id
+murgh,chicken_breast
+chicken,chicken_breast
+chicken breast,chicken_breast
+boneless chicken,chicken_breast
+chicken leg,chicken_thigh
+chicken thigh,chicken_thigh
+chicken with bone,chicken_whole
+whole chicken,chicken_whole
+gosht,mutton
+lamb,mutton
+goat meat,mutton
+machli,fish_rohu
+fish,fish_rohu
+rohu,fish_rohu
+jhinga,prawns
+shrimp,prawns
+anda,egg
+eggs,egg
+cottage cheese,paneer
+doodh,milk_whole
+milk,milk_whole
+full cream milk,milk_whole
+dahi,curd
+yoghurt,curd
+yogurt,curd
+makhan,butter
+clarified butter,ghee
+desi ghee,ghee
+refined oil,sunflower_oil
+cooking oil,sunflower_oil
+oil,sunflower_oil
+vegetable oil,sunflower_oil
+sarson ka tel,mustard_oil
+malai,cream
+fresh cream,cream
+mawa,khoya
+pyaz,onion
+pyaaz,onion
+kanda,onion
+onions,onion
+tamatar,tomato
+tomatoes,tomato
+aloo,potato
+alu,potato
+potatoes,potato
+lehsun,garlic
+garlic cloves,garlic
+adrak,ginger
+ginger garlic paste,ginger
+hari mirch,green_chilli
+green chillies,green_chilli
+green chili,green_chilli
+shimla mirch,capsicum
+bell pepper,capsicum
+sweet pepper,capsicum
+gobi,cauliflower
+phool gobi,cauliflower
+patta gobi,cabbage
+palak,spinach
+baingan,brinjal
+eggplant,brinjal
+aubergine,brinjal
+bhindi,okra
+ladies finger,okra
+gajar,carrot
+matar,green_peas
+peas,green_peas
+lauki,bottle_gourd
+ghiya,bottle_gourd
+doodhi,bottle_gourd
+kaddu,pumpkin
+kheera,cucumber
+shakarkandi,sweet_potato
+mushrooms,mushroom
+khumb,mushroom
+makka,sweet_corn
+corn,sweet_corn
+hara dhaniya,coriander_leaves
+dhania patta,coriander_leaves
+cilantro,coriander_leaves
+pudina,mint_leaves
+kadi patta,curry_leaves
+nimbu,lemon_juice
+lemon,lemon_juice
+imli,tamarind
+nariyal,coconut_fresh
+grated coconut,coconut_fresh
+nariyal doodh,coconut_milk
+chawal,rice_white_raw
+rice,rice_white_raw
+basmati rice,rice_white_raw
+raw rice,rice_white_raw
+cooked rice,rice_white_cooked
+boiled rice,rice_white_cooked
+wheat flour,atta
+gehun ka atta,atta
+whole wheat flour,atta
+all purpose flour,maida
+refined flour,maida
+rava,suji
+sooji,suji
+semolina,suji
+flattened rice,poha
+chiwda,poha
+rolled oats,oats
+gram flour,besan
+chickpea flour,besan
+arhar dal,toor_dal
+tuvar dal,toor_dal
+toor dal,toor_dal
+yellow dal,toor_dal
+mung dal,moong_dal
+green gram,moong_dal
+red lentils,masoor_dal
+masoor,masoor_dal
+bengal gram,chana_dal
+black gram,urad_dal
+kidney beans,rajma
+chole,kabuli_chana
+chana,kabuli_chana
+chickpeas,kabuli_chana
+garbanzo,kabuli_chana
+soya nuggets,soya_chunks
+nutrela,soya_chunks
+soy chunks,soya_chunks
+moongphali,peanuts
+groundnut,peanuts
+badam,almonds
+kaju,cashew
+til,sesame_seeds
+cheeni,sugar
+shakkar,sugar
+gur,jaggery
+shahad,honey
+namak,salt
+table salt,salt
+haldi,turmeric_powder
+turmeric,turmeric_powder
+lal mirch,chilli_powder
+red chilli,chilli_powder
+chili powder,chilli_powder
+mirchi powder,chilli_powder
+dhania powder,coriander_powder
+coriander,coriander_powder
+jeera,cumin_seeds
+cumin,cumin_seeds
+zeera,cumin_seeds
+rai,mustard_seeds
+sarson,mustard_seeds
+garam masala powder,garam_masala
+kali mirch,black_pepper
+pepper,black_pepper
+hing,asafoetida
+dried fenugreek leaves,kasuri_methi
+kasoori methi,kasuri_methi
+kela,banana
+seb,apple
+aam,mango
+paani,water
