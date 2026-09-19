@@ -29,6 +29,17 @@ except ImportError:  # pragma: no cover
 AUTO_ACCEPT = 90.0
 CONFIRM_FLOOR = 70.0
 
+# Generic category terms remain unresolved when several specific ingredients
+# exist. Token-set fuzzy matching would otherwise score "oil" as a perfect match
+# for entries such as "Sunflower Oil".
+GENERIC_AMBIGUOUS = {
+    "oil",
+    "cooking oil",
+    "edible oil",
+    "vegetable oil",
+    "refined oil",
+}
+
 # Words that carry preparation state, not identity. Stripped before matching but
 # kept by the caller as qualifiers.
 _PREP_WORDS = {
@@ -64,6 +75,16 @@ def match_ingredient(name: str, ref: ReferenceData) -> IngredientMatch:
     raw = name or ""
     stripped = _strip_prep(raw)
     normalized = normalize(raw)
+
+    if normalized in GENERIC_AMBIGUOUS:
+        pool: dict[str, str] = {**ref.by_normalized_name, **ref.aliases}
+        return IngredientMatch(
+            query=raw,
+            method=MatchMethod.UNRESOLVED,
+            score=0.0,
+            needs_confirmation=True,
+            candidates=_top_candidates(normalized, pool, ref),
+        )
 
     for probe in (normalized, stripped):
         if probe in ref.by_normalized_name:
