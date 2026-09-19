@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#10181a" />
+  <title>Nutrafuel — Know what’s on your plate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="grain"></div>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Nutrafuel home"><span class="brand-mark">✦</span><span>nutrafuel<span class="brand-dot">.</span></span></a>
+      <nav class="nav-links" aria-label="Primary navigation"><a class="active" href="#workspace">Workspace</a><a href="#how-it-works">The method</a><a href="#saved">Saved recipes <span class="nav-count">03</span></a></nav>
+      <div class="top-actions"><span class="live-label"><span class="live-dot"></span> Live engine</span><button class="avatar" aria-label="Open profile">AK</button></div>
+    </header>
+
+    <main id="workspace">
+      <section class="hero-row">
+        <div class="hero-copy-wrap"><div class="eyebrow"><span class="eyebrow-line"></span> YOUR PERSONAL NUTRITION LAB</div><h1>Make food.<br /><span>Know food.</span></h1><p class="hero-copy">A smarter way to understand the recipes you already love. No guesswork, no black boxes — just clear, useful nutrition.</p><div class="hero-meta"><span>01</span><i></i><span>Describe it in your own words</span></div></div>
+        <div class="hero-orbit" aria-hidden="true"><div class="orbit-ring ring-one"></div><div class="orbit-ring ring-two"></div><div class="orbit-core"><span>NF</span><small>RECIPE<br />ENGINE</small></div><div class="orbit-chip chip-a">↗ 87% confidence</div><div class="orbit-chip chip-b">+ 88 ingredients</div><div class="orbit-star">✦</div></div>
+      </section>
+
+      <section class="workspace-grid">
+        <div class="composer-card glass-card">
+          <div class="section-heading"><div><div class="section-number">01</div><div><p class="kicker">RECIPE INPUT</p><h2>What’s cooking?</h2></div></div><span class="status-pill"><span class="live-dot"></span> Engine ready</span></div>
+          <div class="prompt-row"><span class="prompt-icon">✎</span><span>Tell us what you made, any way you like.</span><span class="prompt-line"></span><span class="spark">✦</span></div>
+          <label class="sr-only" for="recipe-input">Describe your recipe</label>
+          <textarea id="recipe-input" maxlength="2000" placeholder="e.g. 500g chicken breast, 2 onions, 3 tomatoes, 2 tbsp oil…">I made chicken curry using 500g chicken breast, 2 medium onions, 3 tomatoes, 2 tbsp sunflower oil, turmeric, coriander powder and chili powder. It serves 4 people.</textarea>
+          <div class="composer-toolbar"><div class="toolbar-left"><span class="char-count"><span id="char-count">0</span> / 2,000</span><button class="example-btn" id="example-btn">↻ <span>Try another example</span></button></div><button id="analyze-btn" class="primary-btn"><span>Analyze recipe</span><span class="arrow">↗</span></button></div>
+          <div class="recipe-options"><div class="option-label">COOKING STYLE</div><div class="style-pills" role="group" aria-label="Cooking style"><button class="style-pill active" data-method="curry">Curry</button><button class="style-pill" data-method="sauteed">Sautéed</button><button class="style-pill" data-method="grilled">Grilled</button><button class="style-pill" data-method="boiled">Boiled</button></div><div class="servings-control"><span class="option-label">SERVES</span><button id="servings-minus" aria-label="Decrease servings">−</button><strong id="servings-value">4</strong><button id="servings-plus" aria-label="Increase servings">＋</button></div></div>
+        </div>
+
+        <aside class="method-card" id="how-it-works"><div class="method-top"><p class="kicker">WHY IT’S DIFFERENT</p><span class="method-mark">✦</span></div><h3>Every number<br /><em>has a story.</em></h3><p>We don’t estimate from a photo. We trace each number back to the ingredients and the way you cooked them.</p><div class="method-stats"><div><strong>88</strong><span>raw ingredients</span></div><div><strong>159</strong><span>regional aliases</span></div></div><a href="#how-it-works" class="text-link">Explore our method <span>↗</span></a></aside>
+      </section>
+
+      <section class="analysis-progress hidden" id="analysis-progress"><div class="progress-copy"><span class="progress-orb">✦</span><div><strong id="progress-title">Reading your recipe</strong><small id="progress-subtitle">Finding ingredients and quantities…</small></div></div><div class="progress-track"><span id="progress-fill"></span></div><span id="progress-percent">01 / 03</span></section>
+
+      <section id="results" class="results-section hidden">
+        <div class="result-header"><div><div class="eyebrow"><span class="eyebrow-line"></span> YOUR NUTRITION SNAPSHOT</div><h2 id="dish-title">Chicken Curry</h2><p class="result-meta"><span class="meta-tag" id="method-label">Curry</span><span id="servings-label">4 servings</span><span id="weight-label">~781g cooked</span></p></div><div class="result-actions"><button id="new-recipe" class="ghost-btn">＋ New recipe</button><button id="save-recipe" class="secondary-btn">♡ <span>Save</span></button></div></div>
+        <div class="metrics-grid"><div class="metric-card featured"><div class="metric-top"><span class="metric-label">TOTAL ENERGY</span><span class="metric-icon">↗</span></div><strong id="total-kcal">—</strong><span class="metric-unit">kcal</span><div class="metric-foot"><span>per recipe</span><span class="metric-sparkline">▁▃▅▆</span></div></div><div class="metric-card protein-card"><span class="metric-label">PROTEIN</span><strong id="total-protein">—</strong><span class="metric-unit">g</span><div class="metric-foot"><span id="protein-share">—</span><span class="metric-dot protein"></span></div></div><div class="metric-card carbs-card"><span class="metric-label">CARBS</span><strong id="total-carbs">—</strong><span class="metric-unit">g</span><div class="metric-foot"><span id="carb-share">—</span><span class="metric-dot carbs"></span></div></div><div class="metric-card fat-card"><span class="metric-label">FAT</span><strong id="total-fat">—</strong><span class="metric-unit">g</span><div class="metric-foot"><span id="fat-share">—</span><span class="metric-dot fat"></span></div></div></div>
+        <div class="detail-grid"><div class="breakdown-card glass-card"><div class="card-title-row"><div><p class="kicker">PER SERVING</p><h3>Balanced at a glance</h3></div><div class="confidence-badge"><span id="confidence-score">—</span><small>confidence</small></div></div><div class="donut-row"><div class="donut"><div class="donut-center"><strong id="serving-kcal">—</strong><span>kcal</span></div></div><div class="legend"><div><span class="legend-dot protein"></span><p>Protein <strong id="serving-protein">—</strong></p></div><div><span class="legend-dot carbs"></span><p>Carbs <strong id="serving-carbs">—</strong></p></div><div><span class="legend-dot fat"></span><p>Fat <strong id="serving-fat">—</strong></p></div></div></div><div class="confidence-bar"><div><span>Analysis confidence</span><strong id="confidence-label">—</strong></div><div class="bar"><span id="confidence-fill"></span></div><p id="confidence-note">Every number is traceable to an ingredient match.</p></div></div>
+          <div class="assumptions-card glass-card"><div class="card-title-row"><div><p class="kicker">TRACEABILITY</p><h3>Ingredient assumptions</h3></div><span class="count-badge" id="ingredient-count">0 items</span></div><div id="ingredient-list" class="ingredient-list"></div><div id="warning-box" class="warning-box hidden">⚠ <span id="warning-text"></span></div></div></div>
+      </section>
+
+      <section class="empty-state" id="empty-state"><div class="empty-grid"><span></span><span></span><span></span><span></span><span></span><span></span></div><p>YOUR WORKSPACE IS READY</p><h3>Start with a recipe above</h3><span>We’ll turn the familiar into something you can see.</span></section>
+    </main>
+    <footer class="footer"><span><span class="brand-mark mini">✦</span> nutrafuel</span><span>Built for curious home cooks</span><span class="footer-right"><span class="live-dot"></span> Deterministic engine online</span></footer>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

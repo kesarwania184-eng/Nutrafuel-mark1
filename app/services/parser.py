@@ -188,6 +188,17 @@ class RuleBasedParser:
         )
         cleaned = _PREAMBLE_RE.sub("", cleaned, count=1)
 
+        # Support: "Chicken curry: 500g chicken breast, 2 onions, 2 tbsp oil"
+        # Separate the dish title from the ingredient list before parsing chunks.
+        colon_header = re.match(
+            r"^\s*([a-zA-Z][a-zA-Z &'/-]{2,50}?)\s*:\s*(.+)$",
+            cleaned,
+            re.S,
+        )
+
+        if colon_header:
+            cleaned = colon_header.group(2).strip()
+
         ingredients: list[ParsedIngredient] = []
         unparsed: list[str] = []
 
@@ -294,8 +305,27 @@ class RuleBasedParser:
 
     @staticmethod
     def _guess_dish(text: str) -> str | None:
-        m = re.search(r"\b(?:made|cooked|prepared)\s+([a-zA-Z ]{3,40}?)\s+(?:using|with|for|,)", text, re.I)
-        return m.group(1).strip() if m else None
+        # "Chicken curry: 500g chicken breast, 2 onions"
+        m = re.match(
+            r"^\s*([a-zA-Z][a-zA-Z &'/-]{2,50}?)\s*:",
+            text,
+            re.I,
+        )
+        if m:
+            return m.group(1).strip(" .,-")
+
+        # "I made chicken curry using ..."
+        m = re.search(
+            r"\b(?:made|cooked|prepared|making|cooking)\s+"
+            r"([a-zA-Z][a-zA-Z &'/-]{2,50}?)\s+"
+            r"(?:using|with|from|out\s+of|for|,)",
+            text,
+            re.I,
+        )
+        if m:
+            return m.group(1).strip(" .,-")
+
+        return None
 
 
 # --------------------------------------------------------------------------- #
