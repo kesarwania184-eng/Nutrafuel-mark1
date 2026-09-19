@@ -117,10 +117,11 @@ def _detect_method(text: str) -> str | None:
 def _detect_servings(text: str) -> float | None:
     low = text.lower()
     for pattern in (
-        r"serves?\s+(?:about\s+)?(\d+(?:\.\d+)?)",
-        r"(\d+(?:\.\d+)?)\s+servings?",
-        r"for\s+(\d+(?:\.\d+)?)\s+(?:people|persons|members)",
-        r"makes?\s+(\d+(?:\.\d+)?)\s+portions?",
+        r"\bserves?\s*[:=-]?\s*(?:about\s+|approximately\s+|approx\.?\s+)?(\d+(?:\.\d+)?)",
+        r"\b(\d+(?:\.\d+)?)\s+servings?\b",
+        r"\bfor\s+(?:about\s+|approximately\s+|approx\.?\s+)?(\d+(?:\.\d+)?)\s+(?:people|persons|members)\b",
+        r"\bmakes?\s*[:=-]?\s*(?:about\s+|approximately\s+|approx\.?\s+)?(\d+(?:\.\d+)?)\s+(?:portions?|servings?)\b",
+        r"\byields?\s*[:=-]?\s*(?:about\s+|approximately\s+|approx\.?\s+)?(\d+(?:\.\d+)?)\s+(?:portions?|servings?)\b",
     ):
         m = re.search(pattern, low)
         if m:
@@ -141,7 +142,12 @@ _LEAD_RE = re.compile(
     r"^\s*(i\s+)?(made|cooked|prepared|used|added|took|make|cook|prepare|use|add)\s+", re.I
 )
 _TRAILING_CLAUSE_RE = re.compile(
-    r"\b(and\s+)?cook(ed)?\s+(it\s+)?for\b.*$|\bit\s+serves?\b.*$|\bserves?\s+\d+.*$", re.I
+    r"\b(and\s+)?cook(ed)?\s+(it\s+)?for\b.*$"
+    r"|\bit\s+serves?\s*[:=-]?.*$"
+    r"|\bserves?\s*[:=-]?\s*(?:about\s+|approximately\s+|approx\.?\s+)?\d+.*$"
+    r"|\bmakes?\s*[:=-]?\s*(?:about\s+|approximately\s+|approx\.?\s+)?\d+\s+(?:portions?|servings?).*$"
+    r"|\byields?\s*[:=-]?\s*(?:about\s+|approximately\s+|approx\.?\s+)?\d+\s+(?:portions?|servings?).*$",
+    re.I,
 )
 # "I made chicken curry using ..." -> everything before the ingredient list is the
 # dish name, not an ingredient. Without this the dish name gets fuzzy-matched to a
@@ -160,6 +166,19 @@ class RuleBasedParser:
         original = text or ""
         cleaned = _expand_fractions(original)
         cleaned = _TRAILING_CLAUSE_RE.sub(" ", cleaned)
+        # Remove recipe-level serving/yield metadata before ingredient splitting.
+        cleaned = re.sub(
+            r"\b(?:it\s+)?serves?\s*[:=-]?\s*(?:about\s+|approximately\s+|approx\.?\s+)?\d+(?:\.\d+)?(?:\s+(?:people|persons|members|servings?|portions?))?\b.*$",
+            " ",
+            cleaned,
+            flags=re.I,
+        )
+        cleaned = re.sub(
+            r"\b(?:makes?|yields?)\s*[:=-]?\s*(?:about\s+|approximately\s+|approx\.?\s+)?\d+(?:\.\d+)?\s+(?:servings?|portions?)\b.*$",
+            " ",
+            cleaned,
+            flags=re.I,
+        )
         cleaned = _PREAMBLE_RE.sub("", cleaned, count=1)
 
         ingredients: list[ParsedIngredient] = []
