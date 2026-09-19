@@ -46,6 +46,13 @@ def test_parses_glued_units_and_fractions():
 
 # --- matching -------------------------------------------------------------- #
 
+def test_generic_oil_is_unresolved_in_analysis():
+    res = analyzer.analyze(AnalyzeRequest(recipe="200g potato, 2 tbsp oil", method_override="sauteed"))
+    assert "oil" in [x.raw_text.lower() for x in res.unresolved] or any(
+        x.ingredient_id is None for x in res.ingredients if x.raw_text.lower().endswith("oil")
+    )
+
+
 def test_alias_solves_what_fuzzy_cannot():
     """The original spec expected RapidFuzz to map shimla mirch -> bell pepper."""
     from rapidfuzz import fuzz
