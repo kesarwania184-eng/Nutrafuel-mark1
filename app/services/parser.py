@@ -283,6 +283,9 @@ Absolute rules:
 - Never invent ingredients that are not in the user's text.
 - For `food`, choose the closest name from CANONICAL_INGREDIENTS. If nothing is
   close, copy the user's own words instead and do not guess.
+- Generic ingredient words such as "oil", "cooking oil", or "edible oil" are
+  intentionally ambiguous when the vocabulary contains multiple oils. Keep the
+  user's generic wording; never silently turn "oil" into a specific oil.
 - If an amount is not stated, set quantity and unit to null. Do not estimate.
 - `quantity_kind` must be one of: mass, volume, count, household, vague, missing.
 - `method` must be one of METHODS or null.
