@@ -179,6 +179,13 @@ class RuleBasedParser:
             cleaned,
             flags=re.I,
         )
+        # A bare "4 servings" is also recipe metadata, not an ingredient.
+        cleaned = re.sub(
+            r"\b\d+(?:\.\d+)?\s+servings?\b.*$",
+            " ",
+            cleaned,
+            flags=re.I,
+        )
         cleaned = _PREAMBLE_RE.sub("", cleaned, count=1)
 
         ingredients: list[ParsedIngredient] = []
