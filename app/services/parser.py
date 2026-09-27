@@ -165,6 +165,16 @@ class RuleBasedParser:
     def parse(self, text: str, ref: ReferenceData) -> ParsedRecipe:
         original = text or ""
         cleaned = _expand_fractions(original)
+
+        # Detect and remove a standalone dish-name line before ingredient parsing.
+        dish_name = self._guess_dish(original)
+
+        if dish_name:
+            lines = cleaned.splitlines()
+
+            if lines and lines[0].strip().lower() == dish_name.lower():
+                cleaned = "\n".join(lines[1:])
+
         cleaned = _TRAILING_CLAUSE_RE.sub(" ", cleaned)
         # Remove recipe-level serving/yield metadata before ingredient splitting.
         cleaned = re.sub(
@@ -213,7 +223,7 @@ class RuleBasedParser:
                 ingredients.append(parsed)
 
         return ParsedRecipe(
-            dish_name=self._guess_dish(original),
+            dish_name=dish_name,
             ingredients=ingredients,
             method=_detect_method(original),
             cook_time_min=_detect_cook_time(original),
@@ -305,25 +315,41 @@ class RuleBasedParser:
 
     @staticmethod
     def _guess_dish(text: str) -> str | None:
-        # "Chicken curry: 500g chicken breast, 2 onions"
+        """Extract a recipe/dish name from common recipe formats."""
+
+        original = (text or "").strip()
+        if not original:
+            return None
+
+        # Format:
+        # Chicken curry: 500g chicken breast, 2 onions
         m = re.match(
             r"^\s*([a-zA-Z][a-zA-Z &'/-]{2,50}?)\s*:",
-            text,
-            re.I,
+            original,
         )
         if m:
-            return m.group(1).strip(" .,-")
+            return m.group(1).strip()
 
-        # "I made chicken curry using ..."
-        m = re.search(
-            r"\b(?:made|cooked|prepared|making|cooking)\s+"
-            r"([a-zA-Z][a-zA-Z &'/-]{2,50}?)\s+"
-            r"(?:using|with|from|out\s+of|for|,)",
-            text,
-            re.I,
-        )
-        if m:
-            return m.group(1).strip(" .,-")
+        # Format:
+        # Chicken curry
+        # 500g chicken breast
+        # 2 onions
+        lines = [line.strip() for line in original.splitlines() if line.strip()]
+
+        if len(lines) >= 2:
+            first = lines[0]
+
+            # A dish-name line should not look like an ingredient line.
+            if (
+                not re.match(r"^\s*\d+(?:\.\d+)?", first)
+                and not re.search(
+                    r"\b\d+(?:\.\d+)?\s*(?:g|kg|mg|ml|l|tbsp|tsp|cup|cups|"
+                    r"piece|pieces|pcs|serving|servings)\b",
+                    first,
+                    re.I,
+                )
+            ):
+                return first
 
         return None
 
