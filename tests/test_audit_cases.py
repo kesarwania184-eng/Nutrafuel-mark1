@@ -39,6 +39,9 @@ def test_servings_only_changes_per_serving_not_total():
     four = analyzer.analyze(AnalyzeRequest(recipe=recipe, method_override="curry", servings_override=4))
     assert four.total_nutrition.kcal == pytest.approx(one.total_nutrition.kcal, rel=1e-9)
     assert four.per_serving.kcal == pytest.approx(one.per_serving.kcal / 4, abs=0.5)
+    assert four.per_serving.protein_g == pytest.approx(one.per_serving.protein_g / 4, abs=0.1)
+    assert four.per_serving.fat_g == pytest.approx(one.per_serving.fat_g / 4, abs=0.1)
+    assert four.per_serving.carbs_g == pytest.approx(one.per_serving.carbs_g / 4, abs=0.1)
 
 
 def test_dish_name_is_not_an_ingredient():
