@@ -12,7 +12,6 @@ from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException, Query
 
-from app.repository import load_reference_data
 from app.schemas import AnalysisResponse, AnalyzeRequest
 from app.services import matcher
 from app.services.pipeline import RecipeAnalyzer, parsed_hash
