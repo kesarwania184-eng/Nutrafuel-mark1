@@ -61,14 +61,15 @@ export function loadLocalNutrition(openId?: string): {
 export function saveLocalNutrition(
   snapshot: NutritionSnapshot,
   openId?: string
-): void {
+): boolean {
   try {
     window.localStorage.setItem(
       scopedKey(openId),
       JSON.stringify(normalizeSnapshot(snapshot))
     );
+    return true;
   } catch {
-    // Local persistence is a progressive enhancement; the in-memory log still works.
+    return false;
   }
 }
 

@@ -1,5 +1,6 @@
 import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
 import type { User } from "../../drizzle/schema";
+import { getAccountUser } from "../accountAuth";
 import { sdk } from "./sdk";
 
 export type TrpcContext = {
@@ -14,10 +15,18 @@ export async function createContext(
   let user: User | null = null;
 
   try {
-    user = await sdk.authenticateRequest(opts.req);
+    user = await getAccountUser(opts.req);
   } catch (error) {
-    // Authentication is optional for public procedures.
-    user = null;
+    // A database failure should not prevent a valid platform session from working.
+    console.warn("[Auth] Could not check the account session", error);
+  }
+  if (!user) {
+    try {
+      user = await sdk.authenticateRequest(opts.req);
+    } catch {
+      // Authentication is optional for public procedures.
+      user = null;
+    }
   }
 
   return {

@@ -1,4 +1,12 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import {
+  lazy,
+  Suspense,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   ChefHat,
   Flame,
@@ -8,13 +16,15 @@ import {
   Sparkles,
   Check,
   ArrowRight,
+  LogIn,
+  ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { startLogin } from "@/const";
 import { trpc } from "@/lib/trpc";
 import {
   mergeSnapshots,
+  normalizeSnapshot,
   snapshotFingerprint,
   summarizeEntries,
   visibleEntries,
@@ -33,6 +43,12 @@ import {
 import { NutritionOverview } from "@/components/nutrition/NutritionOverview";
 import { QuickAddForm } from "@/components/nutrition/QuickAddForm";
 import { RecipeAnalyzer } from "@/components/nutrition/RecipeAnalyzer";
+
+const AccountDialog = lazy(() =>
+  import("@/components/AccountDialog").then(module => ({
+    default: module.AccountDialog,
+  }))
+);
 
 type FoodValues = {
   food: string;
@@ -59,13 +75,15 @@ function cap(value: number, maximum: number) {
 }
 
 function statusTone(status: string) {
-  if (/paused|offline|not configured/i.test(status)) return "bg-rose-400";
-  if (/sync|saved|changes waiting/i.test(status)) return "bg-emerald-500";
+  if (/paused|offline|not configured|unavailable|could not/i.test(status))
+    return "bg-rose-400";
+  if (/sync|saved|changes waiting|backed up/i.test(status))
+    return "bg-emerald-500";
   return "bg-amber-400";
 }
 
 export default function Home() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [snapshot, setSnapshot] = useState<NutritionSnapshot>(
     () => loadLocalNutrition().snapshot
   );
@@ -75,6 +93,14 @@ export default function Home() {
   const [toast, setToast] = useState("");
   const [syncStatus, setSyncStatus] = useState("Saved on this device");
   const [revision, setRevision] = useState(0);
+  const [accountReadyId, setAccountReadyId] = useState<string | null>(null);
+  const [accountDialogOpen, setAccountDialogOpen] = useState(false);
+  const [onlineEpoch, setOnlineEpoch] = useState(0);
+  const uploadedSnapshot = useRef<{
+    openId: string;
+    fingerprint: string;
+  } | null>(null);
+  const localSaveAvailable = useRef(true);
   const toastTimer = useRef<number | null>(null);
   const entries = useMemo(
     () => visibleEntries(snapshot, date),
@@ -87,15 +113,23 @@ export default function Home() {
     refetchOnWindowFocus: false,
   });
   const push = trpc.nutrition.push.useMutation();
+  const pushSnapshot = push.mutateAsync;
 
   useLayoutEffect(() => {
     const local = loadLocalNutrition(user?.openId);
     setSnapshot(local.snapshot);
     setRevision(user?.openId ? getStoredRevision(user.openId) : 0);
+    setAccountReadyId(null);
+    uploadedSnapshot.current = null;
   }, [user?.openId]);
 
   useEffect(() => {
-    saveLocalNutrition(snapshot, user?.openId);
+    localSaveAvailable.current = saveLocalNutrition(snapshot, user?.openId);
+    if (!localSaveAvailable.current) {
+      setSyncStatus(
+        "Device storage is unavailable · download a backup or sign in to sync"
+      );
+    }
   }, [snapshot, user?.openId]);
 
   useEffect(
@@ -104,6 +138,12 @@ export default function Home() {
     },
     []
   );
+
+  useEffect(() => {
+    const retrySync = () => setOnlineEpoch(value => value + 1);
+    window.addEventListener("online", retrySync);
+    return () => window.removeEventListener("online", retrySync);
+  }, []);
 
   useEffect(() => {
     if (!user?.openId) return;
@@ -137,11 +177,29 @@ export default function Home() {
           setSnapshot(current => mergeSnapshots(result.snapshot, current));
           setRevision(result.revision);
           saveStoredRevision(openId, result.revision);
+          uploadedSnapshot.current = {
+            openId,
+            fingerprint: snapshotFingerprint(result.snapshot),
+          };
+        } else {
+          uploadedSnapshot.current = {
+            openId,
+            fingerprint: snapshotFingerprint(serverSnapshot),
+          };
         }
         markMigrationComplete(openId);
-        if (active) setSyncStatus("Synced to your account");
+        if (active) {
+          setAccountReadyId(openId);
+          setSyncStatus("Synced to your account");
+        }
       } catch {
-        if (active) setSyncStatus("Offline · your device copy is safe");
+        if (active) {
+          setSyncStatus(
+            localSaveAvailable.current
+              ? "Offline · your device copy is safe"
+              : "Offline · download a backup before leaving this page"
+          );
+        }
       }
     }
 
@@ -150,6 +208,51 @@ export default function Home() {
       active = false;
     };
   }, [user?.openId]);
+
+  // Wait for the account pull/merge above, then back up every edit automatically.
+  // The browser copy stays in place and continues to work while offline.
+  useEffect(() => {
+    const openId = user?.openId;
+    if (!openId || accountReadyId !== openId) return;
+    const fingerprint = snapshotFingerprint(snapshot);
+    if (
+      uploadedSnapshot.current?.openId === openId &&
+      uploadedSnapshot.current.fingerprint === fingerprint
+    )
+      return;
+
+    const timer = window.setTimeout(async () => {
+      setSyncStatus("Saving your meal history…");
+      try {
+        const result = await pushSnapshot({ baseRevision: revision, snapshot });
+        if (user?.openId !== openId) return;
+        setSnapshot(current => mergeSnapshots(result.snapshot, current));
+        setRevision(result.revision);
+        saveStoredRevision(openId, result.revision);
+        uploadedSnapshot.current = {
+          openId,
+          fingerprint: snapshotFingerprint(result.snapshot),
+        };
+        setSyncStatus("Meal history backed up to your account");
+      } catch {
+        if (user?.openId === openId) {
+          setSyncStatus(
+            localSaveAvailable.current
+              ? "Sync paused · your on-device history is still available"
+              : "Sync failed · download a backup before leaving this page"
+          );
+        }
+      }
+    }, 800);
+    return () => window.clearTimeout(timer);
+  }, [
+    accountReadyId,
+    onlineEpoch,
+    pushSnapshot,
+    revision,
+    snapshot,
+    user?.openId,
+  ]);
 
   function updateSnapshot(
     update: (current: NutritionSnapshot) => NutritionSnapshot
@@ -212,20 +315,11 @@ export default function Home() {
   }
 
   async function syncNow() {
-    if (!user) {
-      try {
-        startLogin();
-      } catch (error) {
-        setSyncStatus(
-          error instanceof Error ? error.message : "Sign-in is not configured."
-        );
-      }
-      return;
-    }
+    if (!user) return;
     setSyncStatus("Syncing…");
     try {
       const submitted = snapshot;
-      const result = await push.mutateAsync({
+      const result = await pushSnapshot({
         baseRevision: revision,
         snapshot: submitted,
       });
@@ -233,14 +327,31 @@ export default function Home() {
       setRevision(result.revision);
       saveStoredRevision(user.openId, result.revision);
       markMigrationComplete(user.openId);
+      uploadedSnapshot.current = {
+        openId: user.openId,
+        fingerprint: snapshotFingerprint(result.snapshot),
+      };
+      setAccountReadyId(user.openId);
       setSyncStatus(
         result.conflictResolved
           ? "Synced · changes from both devices combined"
           : "All synced"
       );
     } catch {
-      setSyncStatus("Sync paused · your device copy is safe");
+      setSyncStatus(
+        localSaveAvailable.current
+          ? "Sync paused · your device copy is safe"
+          : "Sync failed · download a backup before leaving this page"
+      );
     }
+  }
+
+  function restoreBackup(imported: NutritionSnapshot) {
+    updateSnapshot(current => ({
+      ...mergeSnapshots(current, normalizeSnapshot(imported)),
+      updatedAt: new Date().toISOString(),
+    }));
+    showToast("Backup merged with your meal history");
   }
 
   return (
@@ -271,14 +382,46 @@ export default function Home() {
               title={syncStatus}
               aria-label={syncStatus}
             />
+            {user && (
+              <Button
+                onClick={syncNow}
+                disabled={push.isPending}
+                variant="outline"
+                className="rounded-full border-[#dbe2d8] bg-white/75 text-xs"
+              >
+                Sync now
+                <RotateCcw className="ml-2 h-3.5 w-3.5" />
+              </Button>
+            )}
             <Button
-              onClick={syncNow}
-              variant="outline"
-              className="rounded-full border-[#dbe2d8] bg-white/75 text-xs"
+              type="button"
+              onClick={() => setAccountDialogOpen(true)}
+              variant={user ? "outline" : "default"}
+              className="max-w-44 rounded-full bg-white/90 text-xs text-[#315941] hover:bg-white"
             >
-              {user ? "Sync" : "Sign in to sync"}
-              <RotateCcw className="ml-2 h-3.5 w-3.5" />
+              {user ? (
+                <ShieldCheck className="h-4 w-4" />
+              ) : (
+                <LogIn className="h-4 w-4" />
+              )}
+              <span className="truncate">
+                {user
+                  ? user.name?.trim() || user.email || "Your account"
+                  : "Sign in / Create account"}
+              </span>
             </Button>
+            {accountDialogOpen && (
+              <Suspense fallback={null}>
+                <AccountDialog
+                  open={accountDialogOpen}
+                  onOpenChange={setAccountDialogOpen}
+                  user={user}
+                  snapshot={snapshot}
+                  onRestore={restoreBackup}
+                  onLogout={logout}
+                />
+              </Suspense>
+            )}
           </div>
         </header>
 

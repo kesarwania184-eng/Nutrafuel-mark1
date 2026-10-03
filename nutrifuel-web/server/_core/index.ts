@@ -6,6 +6,7 @@ import { registerOAuthRoutes } from "./oauth";
 import { publicPlatformScript } from "./publicConfig";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
+import { sameOriginMutationGuard } from "./csrf";
 import { serveStatic, setupVite } from "./vite";
 
 async function startServer() {
@@ -23,6 +24,7 @@ async function startServer() {
   });
   registerOAuthRoutes(app);
   // tRPC API
+  app.use("/api/trpc", sameOriginMutationGuard);
   app.use(
     "/api/trpc",
     createExpressMiddleware({
@@ -58,12 +60,10 @@ async function startServer() {
         req.path.startsWith("/api/") &&
         parserError.type === "entity.too.large"
       ) {
-        res
-          .status(413)
-          .json({
-            error:
-              "Request body is too large. Nutrition sync is limited to 2 MB per request.",
-          });
+        res.status(413).json({
+          error:
+            "Request body is too large. Nutrition sync is limited to 2 MB per request.",
+        });
         return;
       }
       next(error);
