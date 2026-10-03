@@ -1,0 +1,1 @@
+ALTER TABLE `user_nutrition_data` MODIFY COLUMN `snapshot` mediumtext NOT NULL;
